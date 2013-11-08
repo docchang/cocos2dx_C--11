@@ -1,14 +1,26 @@
 #include "HelloWorldScene.h"
 
+#include "CCControlButton.h"
+
+
+#include "cocoa/CCString.h"
+
+#include "cocoa/CCDictionary.h"
+
 
 #include <atomic>
-
 std::atomic<int> x;
+
+
+#include <string>
+using namespace std;
+
 
 #include "readerwriterqueue-master/readerwriterqueue.h"
 using namespace moodycamel;
 
 USING_NS_CC;
+USING_NS_CC_EXT;
 
 CCScene* HelloWorld::scene()
 {
@@ -86,8 +98,49 @@ bool HelloWorld::init()
     // add the sprite as a child to this layer
     this->addChild(pSprite, 0);
     
+    
+    
+    const std::string key = "hello world";
+    CCLOG("key:%s", key.c_str());
+    
+
+    CCSet * set = CCSet::create();
+    set->addObject(pSprite);
+
+
+    CCDictionary * dict = CCDictionary::create();
+    CCLOG("dict:%d", (int)dict);
+
+    
+    //linking error
+    dict->setObject(pSprite, "CCString_hello");
+    
+    
+    //linking error
+    CCString * ccstr = CCString::create("hello");
+    CCLOG("CCString: %s", ccstr->getCString());
+    
+    
+    
+    //create button
+    CCScale9Sprite * sprite = CCScale9Sprite::create("apple.png");
+    CCControlButton * btn = CCControlButton::create(sprite);
+    btn->setEnabled(true);
+    btn->setPosition(pSprite->getPosition());
+    btn->setContentSize(sprite->getContentSize());
+    btn->addTargetWithActionForControlEvents(this, cccontrol_selector(HelloWorld::btnPressed), CCControlEventTouchUpInside);
+    this->addChild(btn);
+    
+    
     return true;
 }
+
+
+void HelloWorld::btnPressed(CCObject *sender, CCControlEvent event) {
+    CCLOG("btnPressed");
+    
+}
+
 
 
 void HelloWorld::menuCloseCallback(CCObject* pSender)
