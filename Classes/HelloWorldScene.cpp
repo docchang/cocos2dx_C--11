@@ -1,9 +1,9 @@
 #include "HelloWorldScene.h"
 
 
-//#include <atomic>
-//
-//std::atomic<int> x;
+#include <atomic>
+
+std::atomic<int> x;
 
 #include "readerwriterqueue-master/readerwriterqueue.h"
 using namespace moodycamel;
@@ -30,7 +30,6 @@ bool HelloWorld::init()
 {
     
     moodycamel::ReaderWriterQueue<unsigned int> q(100);
-    
     q.enqueue(10233);
     
     
